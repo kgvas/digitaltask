@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Учёт заданий</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 100%;
+    }
+    th, td {
+      border: 1px solid #aaa;
+      padding: 5px;
+      text-align: center;
+    }
+    th input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #ratingChart {
+      width: 400px;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Учёт выполнения заданий</h1>
+
+  <label for="datePicker">Дата:</label>
+  <input type="date" id="datePicker">
+
+  <button onclick="authorize()">Вход родителя</button>
+  <button onclick="saveWeekToArchive()">Сохранить в архив</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Имя</th>
+        <!-- Заголовки заданий -->
+        <script>
+          const savedHeaders = JSON.parse(localStorage.getItem('taskHeaders')) || Array(18).fill('').map((_, i) => `Задание ${i + 1}`);
+          document.write(savedHeaders.map((title, i) =>
+            `<th><input type="text" value="${title}" onchange="updateHeader(${i}, this.value)"></th>`
+          ).join(''));
+        </script>
+      </tr>
+    </thead>
+    <tbody id="taskBody">
+      <!-- Строки с детьми появятся из JS -->
+    </tbody>
+  </table>
+
+  <h2>Рейтинг за месяц</h2>
+  <canvas id="ratingChart" width="400" height="400"></canvas>
+
+  <script>
+    function updateHeader(index, newValue) {
+      const current = JSON.parse(localStorage.getItem('taskHeaders')) || Array(18).fill('').map((_, i) => `Задание ${i + 1}`);
+      current[index] = newValue;
+      localStorage.setItem('taskHeaders', JSON.stringify(current));
+    }
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>

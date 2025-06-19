@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Архив по неделям</title>
+  <style>
+    table, td, th {
+      border: 1px solid #ccc;
+      border-collapse: collapse;
+      padding: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Архив понедельного рейтинга</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Неделя (дата начала)</th>
+        <th>Глеб</th>
+        <th>Серафима</th>
+        <th>Коля</th>
+      </tr>
+    </thead>
+    <tbody id="archiveBody"></tbody>
+  </table>
+
+  <script>
+    const children = ["Глеб", "Серафима", "Коля"];
+    const tableBody = document.getElementById("archiveBody");
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith("week-")) {
+        const weekData = JSON.parse(localStorage.getItem(key));
+        const row = document.createElement("tr");
+
+        const weekCell = document.createElement("td");
+        weekCell.textContent = key.slice(5); // дата недели
+        row.appendChild(weekCell);
+
+        children.forEach(name => {
+          const cell = document.createElement("td");
+          cell.textContent = weekData[name] ?? 0;
+          row.appendChild(cell);
+        });
+
+        tableBody.appendChild(row);
+      }
+    }
+  </script>
+</body>
+</html>
